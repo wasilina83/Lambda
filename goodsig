@@ -1,0 +1,34 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simulate_lambda_probe_signal(duration, frequency, voltage_amplitude):
+    time = np.arange(0, duration, 1 / frequency)
+    signal = voltage_amplitude * np.sin(2 * np.pi * frequency * time)
+    return time, signal
+
+def add_noise(signal, noise_amplitude):
+    noise = np.random.normal(0, noise_amplitude, len(signal))
+    return signal + noise
+
+def main():
+    duration = 10  # in seconds
+    frequency = 1  # in Hz
+    voltage_amplitude = 0.4  # Spannungshub zwischen 0.1 und 0.9 V
+    noise_amplitude = 0.05  # Rauschen hinzufügen
+
+    time, signal = simulate_lambda_probe_signal(duration, frequency, voltage_amplitude)
+    signal_with_noise = add_noise(signal, noise_amplitude)
+
+    plt.plot(time, signal_with_noise, label='Simuliertes Lambdasonden-Signal mit Rauschen')
+    plt.axhline(0.4, color='r', linestyle='--', label='Mageres Gemisch (Spannung < 0.4 V)')
+    plt.axhline(0.5, color='g', linestyle='--', label='Fettes Gemisch (Spannung > 0.5 V)')
+
+    plt.title('Simulierter Signalverlauf einer Lambdasonde')
+    plt.xlabel('Zeit (s)')
+    plt.ylabel('Spannung (V)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+if __name__ == "__main__":
+    main()
